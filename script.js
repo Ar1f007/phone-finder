@@ -28,20 +28,19 @@ const removeEl = (element) => {
 };
 
 const fetchData = async (url) => {
+  main.textContent = '';
   container.textContent = '';
 
   showLoading();
   const res = await fetch(url);
-  const data = await res.json();
+  const { data } = await res.json();
 
   setTimeout(() => {
     showData(data);
   }, 300);
 };
 
-const showData = (phoneList) => {
-  const { data } = phoneList;
-
+const showData = (data) => {
   removeEl('.loader');
 
   if (data.length === 0) {
@@ -51,7 +50,9 @@ const showData = (phoneList) => {
     return;
   }
 
-  data.map((phone) => {
+  const firstTwentyProducts = data.slice(0, 20);
+
+  firstTwentyProducts.map((phone) => {
     const div = document.createElement('div');
     div.classList.add('card');
 
@@ -74,6 +75,57 @@ const showData = (phoneList) => {
  `;
 
     container.appendChild(div);
+    main.append(container);
+  });
+
+  if (data.length > 19) {
+    const btn = document.createElement('button');
+    btn.classList.add('show-more');
+    btn.textContent = 'show more';
+    main.appendChild(btn);
+  }
+
+  const showMore = document.querySelector('.show-more');
+
+  if (showMore) {
+    showMore.addEventListener('click', () => {
+      document.querySelector('.show-more').remove();
+      showLoading();
+      setTimeout(() => {
+        showAll(data);
+      }, 500);
+    });
+  }
+};
+
+const showAll = (data) => {
+  removeEl('.loader');
+  const restData = data.slice(20, data.length);
+
+  restData.map((phone) => {
+    const div = document.createElement('div');
+    div.classList.add('card');
+
+    div.innerHTML = `
+          <img
+            src=${phone.image} alt=${phone.phone_name}
+            class="img"
+          />
+          <div class="card-body">
+            <h3 class="title">
+              <small class="small-text">name:</small> ${phone.phone_name}
+            </h3>
+            <h3 class="brand">
+              <small class="small-text">brand:</small> ${phone.brand}
+            </h3>
+          </div>
+          <div class="card-footer">
+            <button href="#" class="btn-goto-details details" data-id=${phone.slug}>View Details</button>
+          </div>
+ `;
+
+    container.appendChild(div);
+    main.append(container);
   });
 };
 
@@ -209,18 +261,23 @@ const showProductDetails = (data) => {
         `
             : ''
         }   
+        
+              <button class="btn btn-phone">
+                <span>Close</span> <i class="fa-solid fa-xmark cross"></i>
+              </button>
       </div>
-
-      <button class="btn btn-close">
-        <span>Close</span> <i class="fa-solid fa-xmark cross"></i>
-      </button>
+       <button class="btn btn-close btn-com ">
+                <span>Close</span> <i class="fa-solid fa-xmark cross"></i>
+        </button>
   
   `;
 
   overlay.append(div);
 
-  const closeBtn = document.querySelector('.btn-close');
-  closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
+  const closeBtnPhn = document.querySelector('.btn-phone');
+  const closeBtnCom = document.querySelector('.btn-com');
+  closeBtnPhn.addEventListener('click', () => overlay.classList.remove('show'));
+  closeBtnCom.addEventListener('click', () => overlay.classList.remove('show'));
 };
 
 const handleSubmit = (e) => {
@@ -242,7 +299,7 @@ const handleSubmit = (e) => {
   searchEl.value = '';
 };
 
-const handleDetails = (e) => {
+const showDetails = (e) => {
   if (!e.target.classList.contains('details')) return;
 
   const id = e.target.dataset.id;
@@ -257,5 +314,5 @@ const closeModal = (e) => {
 };
 
 form.addEventListener('submit', handleSubmit);
-container.addEventListener('click', handleDetails);
+container.addEventListener('click', showDetails);
 overlay.addEventListener('click', closeModal);
