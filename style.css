@@ -281,13 +281,14 @@ input[type='search']::-webkit-search-cancel-button {
 
 .overlay {
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  /* bottom: 0; */
 
   z-index: 2;
 
@@ -296,9 +297,6 @@ input[type='search']::-webkit-search-cancel-button {
 
 .overlay.show {
   display: block;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .modal {
@@ -309,6 +307,11 @@ input[type='search']::-webkit-search-cancel-button {
   display: flex;
   background: var(--color-white);
   overflow: hidden;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .phone {
@@ -464,9 +467,6 @@ input[type='search']::-webkit-search-cancel-button {
   .features .description {
     text-align: center;
   }
-  .overlay.show {
-    padding: 5rem 0;
-  }
 
   .btn {
     display: flex;
@@ -497,11 +497,13 @@ input[type='search']::-webkit-search-cancel-button {
     background-color: var(--color-skyblue-4);
   }
 
-  .overlay {
-    /* position: absolute; */
+  .modal {
+    margin: 2rem 0;
+    height: 100%;
     overflow-y: scroll;
   }
 }
+
 @media only screen and (max-width: 480px) {
   .phones-container {
     grid-template-columns: 1fr;

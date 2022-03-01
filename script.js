@@ -104,131 +104,122 @@ const showProductDetails = (data) => {
   div.classList.add('modal');
 
   div.innerHTML = `
-    <div class="phone">
-          <img
-            src=${data.image}
-            alt=${data.name}
-          />
+      <div class="phone">
+        <img src="${data.image}" alt="${data.name}" />
 
-          <div class="info">
-            <h3><span>name:</span> ${data.name}</h3>
-            <h4><span>brand:</span> ${data.brand}</h4>
-            <p><span>release date:</span> ${
+        <div class="info">
+          <h3><span>name:</span> ${data.name}</h3>
+          <h4><span>brand:</span> ${data.brand}</h4>
+          <p>
+            <span>release date:</span> ${
               data.releaseDate ? data.releaseDate : 'N/A'
-            }</p>
-          </div>
+            }
+          </p>
+        </div>
       </div>
 
-
       <div class="specifications">
-          <div class="feature-box">
-            <h3>${mainFeatures ? 'Main Feature' : ' '}</h3>
+        ${
+          data.mainFeatures
+            ? `<div class="feature-box">
+          <h3>${mainFeatures ? 'Main Feature' : ' '}</h3>
 
-            <div class="features">
-              <div class="title">${storage ? 'storage' : ' '} :</div>
-              <div class="description">
-                ${storage ? storage : ''}
-              </div>
-            </div>
+          <div class="features">
+            <div class="title">${storage ? 'storage' : ' '} :</div>
+            <div class="description">${storage ? storage : ''}</div>
+          </div>
 
-            <div class="features">
-              <div class="title">${displaySize ? 'display size' : ' '} :</div>
-              <div class="description">
-                ${displaySize ? displaySize : ''}
-              </div>
-            </div>
+          <div class="features">
+            <div class="title">${displaySize ? 'display size' : ' '} :</div>
+            <div class="description">${displaySize ? displaySize : ''}</div>
+          </div>
 
-            <div class="features">
-              <div class="title">${chipSet ? 'chipset' : ' '} :</div>
-              <div class="description">
-                ${chipSet ? chipSet : ''}
-              </div>
-            </div>
+          <div class="features">
+            <div class="title">${chipSet ? 'chipset' : ' '} :</div>
+            <div class="description">${chipSet ? chipSet : ''}</div>
+          </div>
 
-            <div class="features">
-              <div class="title">${memory ? 'memory' : ' '} :</div>
-              <div class="description">
-                ${memory ? memory : ''}
-              </div>
+          <div class="features">
+            <div class="title">${memory ? 'memory' : ' '} :</div>
+            <div class="description">${memory ? memory : ''}</div>
+          </div>
+
+          <div class="features">
+            <div class="title">${sensors ? 'sensors' : ' '} :</div>
+
+            <div class="description">
+              ${sensors ? sensors.map((sensor) => sensor).join(', ') : ''}
             </div>
+          </div>
+        </div>`
+            : ''
+        }
+
+        ${
+          data.others
+            ? `
+        <div class="feature-box">
+          <h3>${data.others ? 'Others' : ' '}</h3>
+
+          <div class="features">
+            <div class="title">${data.others?.WLAN ? 'WLAN' : ''} :</div>
+            <div class="description">
+              ${data.others?.WLAN ? data.others?.WLAN : ''}
+            </div>
+          </div>
 
           
-
-        
-
-            <div class="features">
-              <div class="title">${sensors ? 'sensors' : ' '} :</div>
-
-              <div class="description">
-              
-                ${sensors ? sensors.map((sensor) => sensor).join(', ') : ''}
-
-              </div>
+          <div class="features">
+            <div class="title">
+              ${data.others?.Bluetooth ? 'bluetooth' : ' '} :
+            </div>
+            <div class="description">
+              ${data.others?.Bluetooth ? data.others?.Bluetooth : ''}
             </div>
           </div>
 
+          <div class="features">
+            <div class="title">${data?.others?.GPS ? 'GPS' : ' '} :</div>
+            <div class="description">
+              ${data?.others?.GPS ? data?.others?.GPS : ''}
+            </div>
+          </div>
 
-          <div class="feature-box">
-            <h3>${data.others ? 'Others' : ' '}</h3>
+          <div class="features">
+            <div class="title">${data?.others?.NFC ? 'NFC' : ' '} :</div>
+            <div class="description">
+              ${data?.others?.NFC ? data?.others?.NFC : ''}
+            </div>
+          </div>
 
-            <div class="features">
-              <div class="title">${data.others?.WLAN ? 'WLAN' : ''} :</div>
-              <div class="description">
-               ${data.others?.WLAN ? data.others?.WLAN : ''}
-              </div>
+          <div class="features">
+            <div class="title">${data?.others?.Radio ? 'radio' : ' '} :</div>
+            <div class="description">
+              ${data?.others?.Radio ? data?.others?.Radio : ''}
             </div>
-           
-            <div class="features">
-              <div class="title">${
-                data.others?.Bluetooth ? 'bluetooth' : ' '
-              } :</div>
-              <div class="description">
-               ${data.others?.Bluetooth ? data.others?.Bluetooth : ''}
-              </div>
-            </div>
-           
-            <div class="features">
-              <div class="title">${data?.others?.GPS ? 'GPS' : ' '} :</div>
-              <div class="description">
-               ${data?.others?.GPS ? data?.others?.GPS : ''}
-              </div>
-            </div>
-           
-            <div class="features">
-              <div class="title">${data?.others?.NFC ? 'NFC' : ' '} :</div>
-              <div class="description">
-               ${data?.others?.NFC ? data?.others?.NFC : ''}
-              </div>
-            </div>
-           
-            <div class="features">
-              <div class="title">${data?.others?.Radio ? 'radio' : ' '} :</div>
-              <div class="description">
-               ${data?.others?.Radio ? data?.others?.Radio : ''}
-              </div>
-            </div>
-           
-            <div class="features">
-              <div class="title">${data?.others?.USB ? 'USB' : ' '} :</div>
-              <div class="description">
-               ${data?.others?.USB ? data?.others?.USB : ''}
-              </div>
-            </div>
+          </div>
 
-             <button class="btn btn-close">
-                <span>Close</span> <i class="fa-solid fa-xmark cross"></i>
-             </button>
-
+          <div class="features">
+            <div class="title">${data?.others?.USB ? 'USB' : ' '} :</div>
+            <div class="description">
+              ${data?.others?.USB ? data?.others?.USB : ''}
+            </div>
           </div>
         </div>
-  
+        `
+            : ''
+        }   
+      </div>
+
+      <button class="btn btn-close">
+        <span>Close</span> <i class="fa-solid fa-xmark cross"></i>
+      </button>
   
   `;
 
   overlay.append(div);
 
   const closeBtn = document.querySelector('.btn-close');
-
   closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
 };
 
