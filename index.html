@@ -29,7 +29,8 @@
     <title>Phone-Finder - Find Your Desired Phone</title>
   </head>
   <body>
-    <header>
+    <header id="header">
+      <!-- LOGO NAME AND SEARCH BAR -->
       <nav class="navbar">
         <div class="navbar-brand">
           <i class="fa-solid fa-satellite"></i> Phone<span>Finder</span>
@@ -44,11 +45,18 @@
       </nav>
     </header>
 
+    <!-- CARD WILL GO INSIDE THE PHONES-CONTAINER DIV  -->
     <main class="main" id="js-main">
       <div class="phones-container" id="js-container"></div>
     </main>
 
+    <!-- FOR SHOWING DETAILS OF THE PRODUCT -->
     <div class="overlay" id="js-overlay"></div>
+
+    <a href="#header">
+      <button type="button" class="navigate-to-top">
+        <i class="fa fa-arrow-circle-up"></i></button
+    ></a>
 
     <!-- JS  -->
     <script src="script.js"></script>

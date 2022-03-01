@@ -4,12 +4,18 @@ const searchEl = document.querySelector('#js-search');
 const main = document.querySelector('#js-main');
 const overlay = document.querySelector('#js-overlay');
 
+/**
+ * LOADING SPINNER
+ */
 const showLoading = () => {
   const div = document.createElement('div');
   div.classList.add('loader');
   main.appendChild(div);
 };
 
+/**
+ * RESPONSIBLE FOR SHOWING ERROR
+ */
 const showError = (msg) => {
   container.textContent = '';
 
@@ -20,6 +26,9 @@ const showError = (msg) => {
   main.appendChild(p);
 };
 
+/**
+ * REMOVE AN ELEMENT FROM THE DOM
+ */
 const removeEl = (element) => {
   const loader = document.querySelector(element);
   if (loader) {
@@ -27,6 +36,10 @@ const removeEl = (element) => {
   }
 };
 
+/**
+ * FETCHES ALL THE DATA INITIALLY,
+ * PASS IT TO showData()
+ */
 const fetchData = async (url) => {
   main.textContent = '';
   container.textContent = '';
@@ -40,6 +53,9 @@ const fetchData = async (url) => {
   }, 300);
 };
 
+/**
+ * DISPLAYS DATA(up to 20) TO THE DOM IF DATA EXISTS
+ */
 const showData = (data) => {
   removeEl('.loader');
 
@@ -50,9 +66,7 @@ const showData = (data) => {
     return;
   }
 
-  const firstTwentyProducts = data.slice(0, 20);
-
-  firstTwentyProducts.map((phone) => {
+  data.slice(0, 20).map((phone) => {
     const div = document.createElement('div');
     div.classList.add('card');
 
@@ -78,6 +92,7 @@ const showData = (data) => {
     main.append(container);
   });
 
+  // checks if there is more than 20 items, if it is then creates "show more" button
   if (data.length > 19) {
     const btn = document.createElement('button');
     btn.classList.add('show-more');
@@ -87,22 +102,29 @@ const showData = (data) => {
 
   const showMore = document.querySelector('.show-more');
 
+  // listening to the events for showing more items
   if (showMore) {
     showMore.addEventListener('click', () => {
       document.querySelector('.show-more').remove();
+
       showLoading();
+
       setTimeout(() => {
-        showAll(data);
+        showRestsData(data);
       }, 500);
     });
   }
 };
 
-const showAll = (data) => {
+/**
+ * RESPONSIBLE FOR SHOWING ALL THE REMAINING ITEMS TO THE PAGE
+ */
+const showRestsData = (data) => {
+  //remove loading
   removeEl('.loader');
-  const restData = data.slice(20, data.length);
 
-  restData.map((phone) => {
+  // display data
+  data.slice(20, data.length).map((phone) => {
     const div = document.createElement('div');
     div.classList.add('card');
 
@@ -124,11 +146,16 @@ const showAll = (data) => {
           </div>
  `;
 
+    // append the card to the container
     container.appendChild(div);
+    // append the container to the main div
     main.append(container);
   });
 };
 
+/**
+ * RESPONSIBLE FOR REMOVING ANY PREVIOUS ERROR FROM THE PAGE
+ */
 const removePreviousErrors = () => {
   const errors = Array.from(document.querySelectorAll('.error'));
   if (errors) {
@@ -138,6 +165,9 @@ const removePreviousErrors = () => {
   }
 };
 
+/**
+ * FETCHES DATA FOR A PARTICULAR ITEM BY ID/SLUG
+ */
 const fetchDataById = async (url) => {
   const res = await fetch(url);
   const { data } = await res.json();
@@ -146,10 +176,21 @@ const fetchDataById = async (url) => {
   showProductDetails(data);
 };
 
-const showProductDetails = (data) => {
-  const { mainFeatures, image, name, releaseDate, brand, others } = data;
-  const { storage, displaySize, chipSet, memory, sensors } = mainFeatures;
+/**
+ * GETS DATA IN DETAILS FOR A PARTICULAR PRODUCT
+ */
+const showDetails = (e) => {
+  if (!e.target.classList.contains('details')) return;
 
+  const id = e.target.dataset.id;
+
+  fetchDataById(`https://openapi.programming-hero.com/api/phone/${id}`);
+};
+
+/**
+ * DISPLAY SPECIFICATIONS OF A PRODUCT IN A MODAL
+ */
+const showProductDetails = (data) => {
   overlay.classList.add('show');
 
   const div = document.createElement('div');
@@ -174,33 +215,55 @@ const showProductDetails = (data) => {
         ${
           data.mainFeatures
             ? `<div class="feature-box">
-          <h3>${mainFeatures ? 'Main Feature' : ' '}</h3>
+          <h3>${data.mainFeatures ? 'Main Feature' : ' '}</h3>
 
           <div class="features">
-            <div class="title">${storage ? 'storage' : ' '} :</div>
-            <div class="description">${storage ? storage : ''}</div>
+            <div class="title">${
+              data.mainFeatures.storage ? 'storage' : ' '
+            } :</div>
+            <div class="description">${
+              data.mainFeatures.storage ? data.mainFeatures.storage : ''
+            }</div>
           </div>
 
           <div class="features">
-            <div class="title">${displaySize ? 'display size' : ' '} :</div>
-            <div class="description">${displaySize ? displaySize : ''}</div>
+            <div class="title">${
+              data.mainFeatures.displaySize ? 'display size' : ' '
+            } :</div>
+            <div class="description">${
+              data.mainFeatures.displaySize ? data.mainFeatures.displaySize : ''
+            }</div>
           </div>
 
           <div class="features">
-            <div class="title">${chipSet ? 'chipset' : ' '} :</div>
-            <div class="description">${chipSet ? chipSet : ''}</div>
+            <div class="title">${
+              data.mainFeatures.chipSet ? 'chipset' : ' '
+            } :</div>
+            <div class="description">${
+              data.mainFeatures.chipSet ? data.mainFeatures.chipSet : ''
+            }</div>
           </div>
 
           <div class="features">
-            <div class="title">${memory ? 'memory' : ' '} :</div>
-            <div class="description">${memory ? memory : ''}</div>
+            <div class="title">${
+              data.mainFeatures.memory ? 'memory' : ' '
+            } :</div>
+            <div class="description">${
+              data.mainFeatures.memory ? data.mainFeatures.memory : ''
+            }</div>
           </div>
 
           <div class="features">
-            <div class="title">${sensors ? 'sensors' : ' '} :</div>
+            <div class="title">${
+              data.mainFeatures.sensors ? 'sensors' : ' '
+            } :</div>
 
             <div class="description">
-              ${sensors ? sensors.map((sensor) => sensor).join(', ') : ''}
+              ${
+                data.mainFeatures.sensors
+                  ? data.mainFeatures.sensors.map((sensor) => sensor).join(', ')
+                  : ''
+              }
             </div>
           </div>
         </div>`
@@ -280,6 +343,30 @@ const showProductDetails = (data) => {
   closeBtnCom.addEventListener('click', () => overlay.classList.remove('show'));
 };
 
+/**
+ * CLOSES THE MODAL ON CLICKING OVERLAY AREA
+ */
+const closeModal = (e) => {
+  if (e.target.classList.contains('overlay')) {
+    overlay.classList.remove('show');
+  }
+};
+
+/**
+ * DISPLAYS/HIDES ICON FOR NAVIGATING TO THE TOP
+ * ACCORDING TO SCROLL-Y POSITION
+ */
+const showNavigateToTopIcon = () => {
+  if (window.scrollY > 200) {
+    document.querySelector('.navigate-to-top').style.visibility = 'visible';
+  } else {
+    document.querySelector('.navigate-to-top').style.visibility = 'hidden';
+  }
+};
+/**
+ * CALLS FOR FETCHING DATA ON SUBMIT
+ * CHECKS FOR VALID INPUT
+ */
 const handleSubmit = (e) => {
   e.preventDefault();
   const searchTerm = searchEl.value;
@@ -299,20 +386,8 @@ const handleSubmit = (e) => {
   searchEl.value = '';
 };
 
-const showDetails = (e) => {
-  if (!e.target.classList.contains('details')) return;
-
-  const id = e.target.dataset.id;
-
-  fetchDataById(`https://openapi.programming-hero.com/api/phone/${id}`);
-};
-
-const closeModal = (e) => {
-  if (e.target.classList.contains('overlay')) {
-    overlay.classList.remove('show');
-  }
-};
-
+// EVENT LISTENERS
 form.addEventListener('submit', handleSubmit);
 container.addEventListener('click', showDetails);
 overlay.addEventListener('click', closeModal);
+window.addEventListener('scroll', showNavigateToTopIcon);
