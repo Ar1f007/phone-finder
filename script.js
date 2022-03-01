@@ -170,7 +170,7 @@ const showProductDetails = (data) => {
 
 
           <div class="feature-box">
-            <h3>${data.others ? 'others' : ' '}</h3>
+            <h3>${data.others ? 'Others' : ' '}</h3>
 
             <div class="features">
               <div class="title">${data.others?.WLAN ? 'WLAN' : ''} :</div>
