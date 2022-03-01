@@ -4,6 +4,7 @@ const searchEl = document.querySelector('#js-search');
 const main = document.querySelector('#js-main');
 const overlay = document.querySelector('#js-overlay');
 
+searchEl.focus();
 /**
  * LOADING SPINNER
  */
