@@ -1,4 +1,5 @@
 :root {
+  --color-skyblue-0: #cff4fc;
   --color-skyblue-1: #86dafc;
   --color-skyblue-2: #44c6fa;
   --color-skyblue-3: #0698d2;
@@ -24,7 +25,49 @@ html {
 
 body {
   font-family: 'Roboto', sans-serif;
+  overflow-x: hidden;
 }
+
+/* LOADER   */
+
+.loader {
+  display: flex;
+  width: 3.5em;
+  height: 3.5em;
+  border: 3px solid transparent;
+  border-top-color: var(--color-skyblue-1);
+  border-bottom-color: var(--color-skyblue-1);
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+.loader:before {
+  content: '';
+  display: block;
+  margin: auto;
+  width: 0.75em;
+  height: 0.75em;
+  border: 3px solid var(--color-skyblue-1);
+  border-radius: 50%;
+  animation: pulse 1s alternate ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.5);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* LOADER   */
 
 header {
   width: 100vw;
@@ -117,23 +160,11 @@ input[type='search']::-webkit-search-cancel-button {
   outline: none;
 }
 
-.error {
-  display: none;
-}
-
-.error.active {
-  width: min(80vw, 100%);
-  font-size: calc(1vw + 1rem);
-  color: #ff3246;
-  text-align: center;
-
-  display: block;
-  margin-inline: auto;
-  margin-top: 5rem;
-}
-
 .main {
   padding: 5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .phones-container {
@@ -155,9 +186,9 @@ input[type='search']::-webkit-search-cancel-button {
 
 .img {
   width: 100%;
-  /* height: 250px; */
   object-fit: cover;
   display: block;
+  padding: 5rem 8rem;
 }
 
 .card-body {
@@ -231,6 +262,32 @@ input[type='search']::-webkit-search-cancel-button {
   opacity: 0;
 }
 
+.error {
+  padding: 2rem 4rem;
+  background-color: var(--color-skyblue-0);
+  width: min(90vw, 700px);
+
+  font-size: clamp(1.89rem, calc(1.71rem + 0.89vw), 2.34rem);
+  color: #ff3246;
+  color: var(--color-skyblue-3);
+  text-align: center;
+  line-height: 1.5;
+
+  display: block;
+  margin-inline: auto;
+  margin-top: 0rem;
+  border-radius: 8px;
+}
+
+@media only screen and (max-width: 992px) {
+  .phones-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .img {
+    padding: 5rem 8rem;
+  }
+}
 @media only screen and (max-width: 480px) {
   .phones-container {
     grid-template-columns: 1fr;
