@@ -103,7 +103,6 @@ const showProductDetails = (data) => {
   const div = document.createElement('div');
   div.classList.add('modal');
 
-  console.log(data);
   div.innerHTML = `
     <div class="phone">
           <img
@@ -230,7 +229,7 @@ const showProductDetails = (data) => {
 
   const closeBtn = document.querySelector('.btn-close');
 
-  closeBtn.addEventListener('click', closeModal);
+  closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
 };
 
 const handleSubmit = (e) => {
@@ -260,8 +259,10 @@ const handleDetails = (e) => {
   fetchDataById(`https://openapi.programming-hero.com/api/phone/${id}`);
 };
 
-const closeModal = () => {
-  overlay.classList.remove('show');
+const closeModal = (e) => {
+  if (e.target.classList.contains('overlay')) {
+    overlay.classList.remove('show');
+  }
 };
 
 form.addEventListener('submit', handleSubmit);
