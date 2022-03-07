@@ -357,17 +357,27 @@ const closeModal = (e) => {
  * DISPLAYS/HIDES ICON FOR NAVIGATING TO THE TOP
  * ACCORDING TO SCROLL-Y POSITION
  */
+let scrolling = false;
 const showNavigateToTopIcon = () => {
-  if (window.scrollY > 200) {
-    document.querySelector('.navigate-to-top').style.visibility = 'visible';
-  } else {
-    document.querySelector('.navigate-to-top').style.visibility = 'hidden';
-  }
+  scrolling = true;
 };
+
+setInterval(() => {
+  if (scrolling) {
+    scrolling = false;
+    if (window.scrollY > 200) {
+      document.querySelector('.navigate-to-top').style.visibility = 'visible';
+    } else {
+      document.querySelector('.navigate-to-top').style.visibility = 'hidden';
+    }
+  }
+}, 300);
+
 /**
  * CALLS FOR FETCHING DATA ON SUBMIT
  * CHECKS FOR VALID INPUT
  */
+
 const handleSubmit = (e) => {
   e.preventDefault();
   const searchTerm = searchEl.value;
